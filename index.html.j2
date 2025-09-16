@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posters & Publications</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .posters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .poster-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .poster-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+        }
+
+        .poster-preview {
+            height: 200px;
+            background: linear-gradient(45deg, #f0f2f5, #e8ecf0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .poster-preview::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23cbd5e0"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/></svg>') no-repeat center;
+            background-size: 48px;
+            opacity: 0.3;
+        }
+
+        .pdf-icon {
+            width: 64px;
+            height: 64px;
+            background: #e53e3e;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        .poster-info {
+            padding: 1.5rem;
+        }
+
+        .poster-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #2d3748;
+            line-height: 1.4;
+        }
+
+        .poster-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+
+        .file-size {
+            background: #edf2f7;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #4299e1;
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .download-btn:hover {
+            background: #3182ce;
+            transform: translateY(-1px);
+        }
+
+        .download-icon {
+            width: 16px;
+            height: 16px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            margin-top: 3rem;
+        }
+
+        .stats {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            color: white;
+            text-align: center;
+        }
+
+        .stats h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .posters-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .poster-card {
+                margin: 0 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Posters & Publications</h1>
+            <p>Research posters and publications from our team</p>
+        </div>
+
+        <div class="stats">
+            <h3>{{ posters|length }} Publication{{ 's' if posters|length != 1 else '' }}</h3>
+            <p>Total size: {{ total_size }}</p>
+        </div>
+
+        <div class="posters-grid">
+            {% for poster in posters %}
+            <div class="poster-card" onclick="window.open('{{ poster.filename }}', '_blank')">
+                <div class="poster-preview">
+                    <div class="pdf-icon">PDF</div>
+                </div>
+                <div class="poster-info">
+                    <h3 class="poster-title">{{ poster.title }}</h3>
+                    <div class="poster-meta">
+                        <span class="file-size">{{ poster.size }}</span>
+                        <span>{{ poster.modified_date }}</span>
+                    </div>
+                    <a href="{{ poster.filename }}" class="download-btn" download>
+                        <svg class="download-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z M12,19L8,15H10.5V12H13.5V15H16L12,19Z"/>
+                        </svg>
+                        Download PDF
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="footer">
+            <p>Generated on {{ generation_date }}</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -9,7 +9,9 @@ posters/
 ├── .github/workflows/publish.yaml    # GitHub Actions workflow
 ├── create-index.py                   # Python script to generate index
 ├── index.html.j2                     # Jinja2 template for the website
-├── index.html                        # Generated website (auto-created)
+├── _site/                           # Generated site directory (auto-created)
+│   ├── index.html                   # Generated website
+│   └── *.pdf                        # Copied PDF files
 ├── *.pdf                            # Your poster/publication files
 └── README.md                        # This file
 ```
@@ -19,8 +21,9 @@ posters/
 1. **Add PDF Files**: Simply add your PDF posters/publications to the repository root
 2. **Push to Main**: The GitHub Actions workflow automatically triggers
 3. **Auto-Generation**: The Python script scans for PDFs and generates metadata
-4. **Template Rendering**: Jinja2 creates a beautiful HTML page from the template
-5. **Deployment**: GitHub Pages automatically deploys the updated site
+4. **Site Creation**: Creates a `_site` directory with the generated HTML and copied PDFs
+5. **Template Rendering**: Jinja2 creates a beautiful HTML page from the template
+6. **Deployment**: GitHub Pages automatically deploys the `_site` directory
 
 ## 📋 Requirements
 
@@ -40,7 +43,7 @@ pip install jinja2
 python3 create-index.py
 
 # Open index.html in your browser
-open index.html
+open _site/index.html
 ```
 
 ## 📝 Adding New Posters

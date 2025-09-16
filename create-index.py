@@ -6,6 +6,7 @@ Uses Jinja2 template to create a modern, responsive gallery of PDF posters.
 
 from datetime import datetime
 from pathlib import Path
+import shutil
 import jinja2
 
 
@@ -110,14 +111,24 @@ def generate_index():
         posters=pdf_files, total_size=total_size, generation_date=generation_date
     )
 
-    # Write to index.html
-    with open("index.html", "w", encoding="utf-8") as f:
+    # Create _site directory if it doesn't exist
+    site_dir = Path("_site")
+    site_dir.mkdir(exist_ok=True)
+
+    # Write to _site/index.html
+    with open(site_dir / "index.html", "w", encoding="utf-8") as f:
         f.write(rendered_html)
 
-    print(f"Generated index.html with {len(pdf_files)} PDF files:")
+    # Copy all PDF files to _site directory
+    for pdf_file in Path(".").glob("*.pdf"):
+        if pdf_file.name.lower().endswith(".pdf"):
+            shutil.copy2(pdf_file, site_dir / pdf_file.name)
+
+    print(f"Generated site in _site/ directory with {len(pdf_files)} PDF files:")
     for pdf in pdf_files:
         print(f"  - {pdf['title']} ({pdf['size']})")
     print(f"Total size: {total_size}")
+    print(f"Site files created in: {site_dir.absolute()}")
 
 
 if __name__ == "__main__":

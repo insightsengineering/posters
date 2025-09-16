@@ -1,1 +1,4 @@
 index.html
+.ruff_cache/
+_site/
+__pycache__/

@@ -26,14 +26,9 @@ jobs:
     - name: Generate index.html
       run: |
         python create-index.py
-        
+
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: .
-        exclude_assets: |
-          .github/
-          *.j2
-          create-index.py
-          README.md
+        publish_dir: _site
